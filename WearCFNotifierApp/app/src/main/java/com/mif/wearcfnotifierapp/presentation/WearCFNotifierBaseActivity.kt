@@ -4,19 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.wear.compose.material.Card
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.TimeText
 import com.mif.wearcfnotifierapp.presentation.theme.WearCFNotifierAppTheme
 
 class WearCFNotifierBaseActivity : ComponentActivity() {
@@ -42,7 +47,6 @@ fun WearCFNotifierApp() {
                 .background(MaterialTheme.colors.background),
             contentAlignment = Alignment.Center
         ) {
-            TimeText()
             LazyColumnCFContestItem()
         }
     }
@@ -50,12 +54,78 @@ fun WearCFNotifierApp() {
 
 @Composable
 fun LazyColumnCFContestItem() {
-    LazyColumn {
-        items((1..20).toList()) {
-            Text(text = "CF Contest $it")
+    LazyColumnWithRoundedCorners()
+}
+
+@Composable
+fun LazyColumnWithRoundedCorners() {
+    val items = listOf(
+        Item("Item 1", "CF Contest"),
+        Item("Item 2", "CF Contest"),
+        Item("Item 3", "CF Contest"),
+        Item("Item 4", "CF Contest"),
+        Item("Item 5", "CF Contest"),
+        Item("Item 6", "CF Contest"),
+        Item("Item 7", "CF Contest"),
+        Item("Item 8", "CF Contest"),
+        Item("Item 9", "CF Contest"),
+        Item("Item 10", "CF Contest"),
+        Item("Item 11", "CF Contest"),
+        Item("Item 12", "CF Contest"),
+        Item("Item 13", "CF Contest"),
+        Item("Item 14", "CF Contest")
+    )
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        item {
+            //Title doesn't work properly, it shifted left/right, Need to fix it in later
+            Text(
+                "Recent",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 68.dp, vertical = 10.dp),
+                color = MaterialTheme.colors.onSurface
+            )
+        }
+        items(items) { item ->
+            ItemCard(item)
         }
     }
 }
+
+@Composable
+fun ItemCard(item: Item) {
+    Card(
+        onClick = { onClick() },
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(3.dp),
+        shape = RoundedCornerShape(45.dp) // Adjust the corner radius as needed
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = item.title,
+                style = MaterialTheme.typography.caption2,
+                color = MaterialTheme.colors.onSurface
+            )
+            Text(
+                text = item.description,
+                style = MaterialTheme.typography.caption3,
+                color = MaterialTheme.colors.onSurfaceVariant
+            )
+        }
+    }
+}
+
+fun onClick() {
+    //TODO
+}
+
+data class Item(val title: String, val description: String)
 
 @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
 @Composable
