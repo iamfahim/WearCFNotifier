@@ -7,10 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.wear.compose.foundation.lazy.AutoCenteringParams
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.Card
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
@@ -26,8 +26,6 @@ import com.mif.wearcfnotifierapp.presentation.theme.WearCFNotifierAppTheme
 
 class WearCFNotifierBaseActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
-
         super.onCreate(savedInstanceState)
 
         setTheme(android.R.style.Theme_DeviceDefault)
@@ -76,17 +74,15 @@ fun LazyColumnWithRoundedCorners() {
         Item("Item 14", "CF Contest")
     )
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
+    ScalingLazyColumn(
+        contentPadding = PaddingValues(horizontal = 3.dp),
+        autoCentering = AutoCenteringParams(itemOffset = 30)
     ) {
         item {
-            //Title doesn't work properly, it shifted left/right, Need to fix it in later
             Text(
-                "Recent",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 68.dp, vertical = 10.dp),
-                color = MaterialTheme.colors.onSurface
+                "Upcoming contests",
+                color = MaterialTheme.colors.secondary,
+                style = MaterialTheme.typography.title3
             )
         }
         items(items) { item ->
@@ -99,10 +95,7 @@ fun LazyColumnWithRoundedCorners() {
 fun ItemCard(item: Item) {
     Card(
         onClick = { onClick() },
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(3.dp),
-        shape = RoundedCornerShape(45.dp) // Adjust the corner radius as needed
+        shape = RoundedCornerShape(25.dp) // Adjust the corner radius as needed
     ) {
         Column(
             verticalArrangement = Arrangement.SpaceBetween
@@ -115,7 +108,7 @@ fun ItemCard(item: Item) {
             Text(
                 text = item.description,
                 style = MaterialTheme.typography.caption3,
-                color = MaterialTheme.colors.onSurfaceVariant
+                color = MaterialTheme.colors.onSurface
             )
         }
     }
